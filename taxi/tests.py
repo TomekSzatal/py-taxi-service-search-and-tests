@@ -11,8 +11,11 @@ from taxi.admin import DriverAdmin, CarAdmin
 # -------------------------
 class ModelTests(TestCase):
     def test_manufacturer_str(self):
-        m = Manufacturer.objects.create(name="BMW", country="Germany")
-        self.assertEqual(str(m), "BMW Germany")
+        manufacturer = Manufacturer.objects.create(
+            name="BMW",
+            country="Germany",
+        )
+        self.assertEqual(str(manufacturer), "BMW Germany")
 
     def test_driver_str(self):
         driver = Driver.objects.create_user(
@@ -25,8 +28,11 @@ class ModelTests(TestCase):
         self.assertIn("john", str(driver))
 
     def test_car_str(self):
-        m = Manufacturer.objects.create(name="BMW", country="Germany")
-        car = Car.objects.create(model="X5", manufacturer=m)
+        manufacturer = Manufacturer.objects.create(
+            name="BMW",
+            country="Germany",
+        )
+        car = Car.objects.create(model="X5", manufacturer=manufacturer)
         self.assertEqual(str(car), "X5")
 
 
@@ -59,7 +65,10 @@ class DriverFormTests(TestCase):
 
 class CarFormTests(TestCase):
     def test_car_form_valid(self):
-        m = Manufacturer.objects.create(name="BMW", country="Germany")
+        manufacturer = Manufacturer.objects.create(
+            name="BMW",
+            country="Germany",
+        )
         driver = Driver.objects.create_user(
             username="john",
             password="12345",
@@ -68,7 +77,7 @@ class CarFormTests(TestCase):
 
         form = CarForm(data={
             "model": "X5",
-            "manufacturer": m.id,
+            "manufacturer": manufacturer.id,
             "drivers": [driver.id],
         })
 
