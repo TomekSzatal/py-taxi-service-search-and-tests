@@ -38,7 +38,7 @@ class ManufacturerListView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        query = self.request.GET.get("q")
+        query = (self.request.GET.get("q") or "").strip()
 
         if query:
             queryset = queryset.filter(name__icontains=query)
@@ -69,7 +69,7 @@ class CarListView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         queryset = Car.objects.select_related("manufacturer")
-        query = self.request.GET.get("q")
+        query = (self.request.GET.get("q") or "").strip()
 
         if query:
             queryset = queryset.filter(model__icontains=query)
@@ -104,7 +104,7 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        query = self.request.GET.get("q")
+        query = (self.request.GET.get("q") or "").strip()
 
         if query:
             queryset = queryset.filter(username__icontains=query)
@@ -130,7 +130,7 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Driver
-    success_url = reverse_lazy("")
+    success_url = reverse_lazy("taxi:driver-list")
 
 
 @login_required
